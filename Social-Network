@@ -47,10 +47,10 @@ Sort by grade, then by name within each grade.
 select name, grade 
 from Highschooler
 where not ID in (
-				select distinct ID1 from likes 
-				 union 
-				 select distinct ID2 from likes
-				 )
+	select distinct ID1 from likes 
+	union 
+	select distinct ID2 from likes
+		)
 order by grade, name;
 
 Q5) For every situation where student A likes student B, but we have no information about whom B likes 
