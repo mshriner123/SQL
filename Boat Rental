@@ -1,0 +1,86 @@
+Boat Rental Schema:
+
+Sailor(sid,sname,rating,age)
+sid is a unique integer identification corresponding to each sailor
+sname is a string that is the name of the corresponding sailor 
+rating is an integer that indicates the sailor's level of sailing expertise
+age is a real number that indicates the sailor's age  
+
+Boat(bid,bname,color)
+bid is an integer that is a unique boat identifier
+bname is a string that indicates the name of the boat 
+color is a string that indicates the color of the boat 
+
+Reserve(sid, bid, day)
+sid is an integer that is a unique identifier for each sailor 
+bid is an integer that is a unique identifer for each boat 
+day is the date when the boat is reserved (e.g., 10/10/2013)
+
+note: A sailor may only have one reservation for a specific boat on a particular day
+
+Queries run on MySQL
+
+Q12) List the id and names of sailors who have reserved boat number 103.
+
+select distinct S1.sid, S1.sname
+from Sailor S1
+inner join Reserve R1 on S1.sid = R1.sid 
+where R1.bid = 103;
+
+Q13) List the id and names of sailors who have reserved a blue boat.
+
+select distinct S1.sid, S1.sname
+from Sailor S1
+inner join Reserve R1 on R1.sid = S1.sid
+inner join Boat B1 on B1.bid = R1.bid 
+where B1.color = 'blue';
+
+Q15) List the id and names of sailors who are older than the oldest sailor with a rating of 10.
+
+select S1.sid, S1.sname 
+from Sailor S1
+where S1.age > all (
+	select S2.age
+	from Sailor S2
+	where S2.rating = 10
+	);
+
+
+Q17) List the id and names of sailors who have not reserved a purple boat.
+
+SELECT distinct sid, sname
+FROM Sailor
+WHERE sid not in (
+	SELECT sid 
+FROM Reserve R
+INNER JOIN Boat B on B.bid = R.bid
+WHERE B.color = ‘purple’
+);
+
+Q19) List the sids of sailors who have reserved a yellow boat, but not a green boat.
+
+ 
+SELECT DISTINCT R1.sid
+FROM Reserve R1, Boat B1
+WHERE R1.bid = B1.bid AND B1.color = 'yellow'
+AND R1.sid NOT IN 
+(SELECT R2.sid
+FROM Reserve R2, Boat B2
+WHERE R2.bid = B2.bid and B2.color = 'green');
+
+Q20)List the id and name of sailors who have only reserved blue boats.
+
+SELECT S1.sid, S1.sname
+FROM Sailor S1
+INNER JOIN Reserve R1 on S1.sid = R1.sid 
+INNER JOIN Boat B1 on B1.bid = R1.bid 
+WHERE B1.color = 'blue' AND S1.sid NOT IN 
+(SELECT S2.sid 
+FROM Sailor S2
+INNER JOIN Reserve R2 on S2.sid = R2.sid 
+INNER JOIN Boat B2 on B2.bid = R2.bid 
+WHERE B2.color != 'blue'
+);
+
+
+
