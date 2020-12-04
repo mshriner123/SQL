@@ -20,6 +20,8 @@ note: A sailor may only have one reservation for a specific boat on a particular
 
 Queries run on MySQL
 
+Exercises, database, and schema provided by Professor Christine Reilly as part of my research course with her at Skidmore College.
+
 Q12) List the id and names of sailors who have reserved boat number 103.
 
 select distinct S1.sid, S1.sname
